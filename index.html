@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <title>Pokerdle</title>
 </head>
-<body>
+<body class="light-mode">
     <div class="overlay hidden" id="overlay"></div>
     <nav class="navbar">
         <div class="menu-left">
@@ -19,7 +19,7 @@
                 </svg>
             </button>
         </div>
-        <h1 class="title">NameHere</h1>
+        <h1 class="title">Pokerdle</h1>
         <div class="menu-right">
             <button class="settings" id="settingsButton" tabindex="17">
                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" height="28" viewBox="4 4 24 24" width="28" data-testid="icon-settings">
@@ -37,37 +37,91 @@
                         <path fill="var(--black)" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
                     </svg>
                 </button>
-                <h2>How to Play</h2>
-                <p>Enter the cards in each row from left to right. The first card in each row is the top card, and the last card is the bottom card.</p>
-                <p>Use the keyboard to enter the cards. Use the suit buttons to change the suit of the card.</p>
-                <p>Press ENTER to submit the row, and BACKSPACE to delete the last card entered.</p>
-                <p>Press the HELP button to close this menu.</p>
+                <div class="top">
+                    <h2>How To Play</h2>
+                    <p>Guess the Pokerdle in 6 tries</p>
+                </div>
+                <div class="middle-first">
+                    <p>The answer can only be <u>one of the following</u> hands:</p>
+                    <ul>
+                        <li>Straight</li>
+                        <li>Flush</li>
+                        <li>Full House</li>
+                        <li>Four of a Kind</li>
+                        <li>Straight Flush</li>
+                        <li>Royal Flush</li>
+                    </ul>
+                    <span>Cards are <u>sorted by rank</u> (Spades &lt; Hearts &lt; Clubs &lt; Diamonds)</span>
+                </div>
+                <h3>Examples</h3>
+                <div class="middle-second">
+                    <div class="card-example">
+                        <div class="card">
+                            <div class="contents">
+                                <p class="top-num">8</p>
+                                <img class="card-suit-img" draggable="false" src="/Assets/spades.svg">
+                                <p class="bottom-num">8</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="contents">
+                                <p class="top-num">9</p>
+                                <img class="card-suit-img" draggable="false" src="/Assets/hearts.svg">
+                                <p class="bottom-num">9</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="contents">
+                                <p class="top-num">10</p>
+                                <img class="card-suit-img" draggable="false" src="/Assets/clubs.svg">
+                                <p class="bottom-num">10</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="contents">
+                                <p class="top-num">J</p>
+                                <img class="card-suit-img" draggable="false" src="/Assets/diamonds.svg">
+                                <p class="bottom-num">J</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="contents">
+                                <p class="top-num">Q</p>
+                                <img class="card-suit-img" draggable="false" src="/Assets/spades.svg">
+                                <p class="bottom-num">Q</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <p><span class="green-text">Green</span> = Correct card in correct spot</p>
+                    <p><span class="yellow-text">Yellow</span> = Correct card in wrong spot</p>
+                    <p><span class="grey-text">Grey</span> = Incorrect card</p>
+                </div>
+                <hr>
+                <div class="credit">
+                    <p>Pokerdle is a <a href="https://www.nytimes.com/games/wordle/index.html" target="_blank">Wordle</a> variation created by <a href="https://www.linkedin.com/in/tegan-hakim/" target="_blank">Tegan Hakim</a></p>
+                </div>
             </div>
             <div class="settings-menu hidden" id="settingsMenu">
+                <button class="exit" id="settingsExit">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 24 24"  data-testid="icon-close">
+                        <path fill="var(--black)" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                    </svg>
+                </button>
                 <h2>Settings</h2>
-                <div class="settings-row">
-                    <label for="theme">Theme:</label>
-                    <select name="theme" id="theme">
-                        <option value="light">Light</option>
-                        <option value="dark">Dark</option>
-                    </select>
+                <div class="settings">
+                    <div class="row">
+                        <p>Dark Theme</p>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="bottom">
+                        <p>© <span class="year">2024</span> Pokerdle by <a href="https://www.linkedin.com/in/tegan-hakim/" target="_blank">Tegan Hakim</a></p>
+                    </div>
                 </div>
-                <div class="settings-row">
-                    <label for="difficulty">Difficulty:</label>
-                    <select name="difficulty" id="difficulty">
-                        <option value="easy">Easy</option>
-                        <option value="medium">Medium</option>
-                        <option value="hard">Hard</option>
-                    </select>
-                </div>
-                <div class="settings-row">
-                    <label for="sound">Sound:</label>
-                    <select name="sound" id="sound">
-                        <option value="on">On</option>
-                        <option value="off">Off</option>
-                    </select>
-                </div>
-                <button class="save">Save</button>
             </div>
             <div class="board">
                 <div class="board-row">

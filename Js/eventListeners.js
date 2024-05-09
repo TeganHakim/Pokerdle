@@ -25,6 +25,15 @@ helpCloseButton.addEventListener('click', () => {
 // Settings Menu
 settingsButton.addEventListener('click', () => {
     settingsMenu.classList.remove('hidden');
+    overlay.classList.remove('hidden');
+    settingsMenu.style.animation = "slide-in ease-out 200ms";
+});
+settingsCloseButton.addEventListener('click', () => {
+    settingsMenu.style.animation = "slide-out ease-out 200ms";
+    setTimeout(()=>{
+        settingsMenu.classList.add('hidden');
+        overlay.classList.add('hidden');
+    }, 190);
 });
 
 // Board
