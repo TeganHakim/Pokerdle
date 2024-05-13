@@ -376,6 +376,25 @@ main {
     opacity: 0.5;
 }
 
+/* Alert */
+.alert {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    padding: 20px;
+    height: 40px;
+    position: absolute;
+    top: 65px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text-color);
+    color: var(--bg-color);
+    z-index: 100;
+    border-radius: 7px;
+}
+
+
 /* Help Menu */
 .help-menu {
     display: flex;
@@ -605,7 +624,7 @@ input:checked + .slider:before {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 520px;
-    height: 250px;
+    height: 270px;
     background-color: var(--white);
     border-radius: 8px;
     font-size: 17px;
@@ -636,12 +655,41 @@ input:checked + .slider:before {
     align-items: center;
 
 }
+
 .game-over .solution {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
     width: 80%;
+}
+
+.game-over .share-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.game-over .share {
+    width: 170px;
+    height: 40px;
+    border-radius: 100px;
+    font-size: 16px;
+    background-color: #58a351;
+    color: var(--white);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-over .share svg {
+    margin-left: 10px;
+}
+
+.game-over .share path {
+    fill: var(--white)!important;
 }
 
 .help-menu .card-example .card {

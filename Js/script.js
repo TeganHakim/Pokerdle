@@ -5,8 +5,12 @@ const rows = document.querySelectorAll('.board-row');
 const cards = document.querySelectorAll('.card');
 const keyCards = document.querySelectorAll('.key-card');
 const title = document.querySelector('.title');
+const alert = document.getElementById('alert');
 
+const gameOverMenuTitle = document.getElementById('gameOverTitle');
 const gameOverMenuCards = document.getElementById('gameOverSolution');
+
+const shareButton = document.getElementById('shareButton');
 
 let disabledButtons = [];
 
@@ -28,8 +32,8 @@ window.onload = () => {
 
 // Generate solution
 function generateSolution() {
-    // let type = solutionType[Math.floor(Math.random() * solutionType.length)];
-    let type = "Full House";
+    let type = solutionType[Math.floor(Math.random() * solutionType.length)];
+    // let type = "Full House";
     if (type == "Straight") {
         let startingValue = Math.floor(Math.random() * 9) + 2;
         for (let i = 0; i < 5; i++) {
@@ -218,6 +222,11 @@ function checkGameOver() {
 function updateGameOver() {
     openGameOver();
     gameOver = true;
+    if (win) {
+        gameOverMenuTitle.textContent = "Congratulations - You Win!";
+    } else {
+        gameOverMenuTitle.textContent = "Game Over";
+    }
     for (let i = 0; i < solution.length; i++) {
         const topText = gameOverMenuCards.children[i].children[0].children[0];
         const img = gameOverMenuCards.children[i].children[0].children[1];
@@ -227,7 +236,6 @@ function updateGameOver() {
         img.alt = `${suits[solution[i]['suit']]}`;
         bottomText.textContent = numberToLetter(solution[i]['value']);
     }
-    copyToClipboard();
 }
 
 // Open game over screen
@@ -434,7 +442,8 @@ function numberToLetter(cardNum) {
     }
 }
 
-function copyToClipboard() {
+// Sharing copy to clipboard
+shareButton.addEventListener('click', async () => {
     let text = "Pokerdle " + getDate();
     let attempts = win ? solvedAttemps : 'X'
     text += " " + attempts + "/6\n"
@@ -450,13 +459,32 @@ function copyToClipboard() {
         }
         text += "\n";
     }
-    navigator.clipboard.writeText(text);
+    // Mobile
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        await navigator.share({
+            title: 'Web Share API Draft',
+            text: text,
+        });
+    }
+    // Desktop
+    else {
+        await navigator.clipboard.writeText(text);
+        alertUser("Copied to clipboard!");
+    }   
+});
+
+function alertUser(message) {
+    let alertText = alert.children[0];
+    alertText.textContent = message;
+    alert.classList.remove('hidden');
+    setTimeout(() => {
+        alert.classList.add('hidden');
+    }, 2000);
 }
 
 function getDate() {
     const date = new Date();
     const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    const formatYear = year.toString()[2] + year.toString()[3]
-    return month + "/" + formatYear;
+    const day = date.getDate();
+    return month + "/" + day;
 }
