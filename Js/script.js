@@ -6,6 +6,8 @@ const cards = document.querySelectorAll('.card');
 const keyCards = document.querySelectorAll('.key-card');
 const title = document.querySelector('.title');
 
+const gameOverMenuCards = document.getElementById('gameOverSolution');
+
 let disabledButtons = [];
 
 let solutionType = ["Straight", "Flush", "Full House", "Four of a Kind", "Straight Flush", "Royal Flush"];
@@ -15,6 +17,10 @@ let solution = [];
 let currentSuit = 0;
 let currentRow = 0;
 let currentCard = 0;
+
+let gameOver = false;
+let solvedAttemps = 0;
+let win = false;
 
 window.onload = () => {
     generateSolution();
@@ -141,8 +147,13 @@ function sortBySuit(arr) {
 
 // Submit row
 function submitRow() {
+    if (gameOver) {
+        openGameOver();
+        return;
+    }
     if (currentCard == 5) {
         checkRow();
+        checkGameOver();
         if (currentRow < 5) {
             currentCard = 0;
             currentRow++;
@@ -158,6 +169,9 @@ function submitRow() {
 
 // Check row
 function checkRow() {
+    if (gameOver) {
+        return;
+    }
     let correct = [];
     let almost = []
     let incorrect = [];
@@ -180,6 +194,47 @@ function checkRow() {
         }
     }
     updateRowStatus(correct, almost, incorrect);
+}
+
+// Check if win or loose 
+function checkGameOver() {
+    solvedAttemps++;
+
+    let correct = 0;
+    for (let i = 0; i < solution.length; i++) {
+        if (rows[currentRow].children[i].style.backgroundColor == 'var(--correct-green)') {
+            correct++;
+        }
+    }
+    if (correct == 5) {
+        win = true;
+        updateGameOver();
+    } else if (currentRow == 5) {
+        updateGameOver();
+    }
+}
+
+// Update game over menu
+function updateGameOver() {
+    openGameOver();
+    gameOver = true;
+    for (let i = 0; i < solution.length; i++) {
+        const topText = gameOverMenuCards.children[i].children[0].children[0];
+        const img = gameOverMenuCards.children[i].children[0].children[1];
+        const bottomText = gameOverMenuCards.children[i].children[0].children[2];
+        topText.textContent = numberToLetter(solution[i]['value']);
+        img.src = `/Assets/${suits[solution[i]['suit']]}.svg`;      
+        img.alt = `${suits[solution[i]['suit']]}`;
+        bottomText.textContent = numberToLetter(solution[i]['value']);
+    }
+    copyToClipboard();
+}
+
+// Open game over screen
+function openGameOver() {
+    gameOverMenu.classList.remove('hidden');
+    overlay.classList.remove('hidden');
+    gameOverMenu.style.animation = "slide-in ease-out 200ms";
 }
 
 // Turn row into object of values and suits
@@ -237,6 +292,9 @@ function updateKeyCards() {
 
 // Place card on first empty spot on board
 function placeCard(button, value) {
+    if (gameOver) {
+        return;
+    }
     if (isAvailable()) {
         updateBoard(button, value);
     }
@@ -262,7 +320,7 @@ function updateBoard(button, value) {
 function updateCardContents(topText, img, bottomText, value) {
     if (!cardExistsPerRow(value)) {
         topText.textContent = value;
-        img.src = `/Assets/${suits[currentSuit]}.svg`;
+        img.src = `/Assets/${suits[currentSuit]}.svg`;      
         img.alt = `${suits[currentSuit]}`;
         bottomText.textContent = value;
         updateTextColor(topText, bottomText);
@@ -301,7 +359,8 @@ function isAvailable() {
 function updateCardStyle() {
     rows[currentRow].children[currentCard].children[0].classList.remove('hidden');
     rows[currentRow].children[currentCard].style.animation = 'pulse 0.1s ease forwards';
-    rows[currentRow].children[currentCard].style.borderColor = 'var(--dark-grey)';
+    rows[currentRow].children[currentCard].style.borderColor = 'var(--border-card)';
+    rows[currentRow].children[currentCard].style.background = 'var(--bg-card)';
 }
 
 // Disable buttons that have already been used in the current row
@@ -319,6 +378,9 @@ function updateDisabledButtons() {
 }
 
 function backspace() {
+    if (gameOver) {
+        return;
+    }
     let backspaceCard = currentCard - 1;
     if (backspaceCard >= 0) {
         let card = rows[currentRow].children[backspaceCard];
@@ -336,10 +398,10 @@ function backspace() {
         updateDisabledButtons();
         card.style.animation = 'none';
         card.style.borderColor = 'var(--light-grey)';
+        card.style.background = 'transparent';
         content.classList.add('hidden');
         currentCard--;
     }
-
 }
 
 // Changes the color of passed HTML elements to reflect card suit
@@ -370,4 +432,31 @@ function numberToLetter(cardNum) {
     } else {
         return cardNum.toString();
     }
+}
+
+function copyToClipboard() {
+    let text = "Pokerdle " + getDate();
+    let attempts = win ? solvedAttemps : 'X'
+    text += " " + attempts + "/6\n"
+    for (let i = 0; i < rows.length; i++) {
+        for (let j = 0; j < rows[i].children.length; j++) {
+            if (rows[i].children[j].style.backgroundColor == 'var(--correct-green)') {
+                text += '🟩';
+            } else if (rows[i].children[j].style.backgroundColor == 'var(--almost-yellow)') {
+                text += '🟨';
+            } else {
+                text += '⬜';
+            }
+        }
+        text += "\n";
+    }
+    navigator.clipboard.writeText(text);
+}
+
+function getDate() {
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formatYear = year.toString()[2] + year.toString()[3]
+    return month + "/" + formatYear;
 }

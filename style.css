@@ -1,5 +1,10 @@
 
 :root {
+    --bg-color: var(--white);
+    --bg-card: transparent;
+    --border-card: var(--dark-grey);
+    --text-color: var(--black);
+
     --white: #ffffff;
     --black: #000000;
     --correct-green: #0bdf70;
@@ -30,16 +35,22 @@
 
 body {
     font-family: 'Cabin', sans-serif;
+    background-color: var(--bg-color);
 }
 
 .light-mode {
-    background-color: var(--white);
-    color: black;
+    --bg-color: var(--white);
+    --bg-card: transparent;
+    --border-card: var(--dark-grey);
+    --text-color: var(--black);
 }
 .dark-mode {
-    background-color: var(--dark-bg);
-    color: var(--white);
+    --bg-color: var(--dark-bg);
+    --bg-card: var(--white);
+    --border-card: transparent;
+    --text-color: var(--white);
 }
+
 
 button {
     font-family: 'Cabin', sans-serif;
@@ -54,7 +65,7 @@ button {
     align-items: center;
     padding: 0 20px;
     height: 65px;
-    color: var(--black);
+    color: var(--text-color);
     border-bottom: 1px solid var(--light-grey);
 }
 
@@ -65,10 +76,14 @@ button {
     cursor: pointer;
 }
 
+svg path {
+    fill: var(--text-color);
+}
+
 .title {
     text-decoration: none;
     font-weight: 400;
-    color: var(--black);
+    color: var(--text-color);
     font-size: 36px;
     text-align: center;
     flex-grow: 2;
@@ -114,7 +129,8 @@ button {
 .review {
     font-size: 16px;
     padding: 0 25px;
-    border: 1px solid var(--black);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
     border-radius: 100px;
     min-height: 35px;
     margin-left: 30px;
@@ -206,6 +222,10 @@ main {
     position: absolute;
     transform-origin: center 520%;
     transition: transform 0.1s ease-in-out;
+}
+
+.dark-mode .key {
+    background: var(--white);
 }
 
 .key:nth-child(1) {
@@ -331,6 +351,7 @@ main {
     border-radius: 7px;
     cursor: pointer;
     text-decoration: none;
+    color: var(--text-color);
     background: var(--key);
     font-size: 13px;
     font-weight: bold;
@@ -348,6 +369,11 @@ main {
     pointer-events: all;
     z-index: 98;
     transition: backround-color 0.1s ease-out;
+}
+
+.dark-mode .overlay {
+    background-color: var(--dark-bg);
+    opacity: 0.5;
 }
 
 /* Help Menu */
@@ -451,6 +477,10 @@ hr {
     top: 10px;
     right: 10px;
     cursor: pointer;
+}
+
+.exit path {
+    fill: var(--black)!important;
 }
 
 /* Settings Menu */
@@ -558,6 +588,70 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+.dark-mode .help-menu, .dark-mode .settings-menu {
+    box-shadow: 0 4px 23px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Game Over */
+.game-over {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: left;
+    position: absolute;
+    padding: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 520px;
+    height: 250px;
+    background-color: var(--white);
+    border-radius: 8px;
+    font-size: 17px;
+    pointer-events: all;
+    user-select: text;
+    box-shadow: 0 4px 23px 0 rgba(0, 0, 0, .2);
+    z-index: 99;
+}
+
+.game-over h2 {
+    position: relative;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.game-over > p {
+    position: relative;
+    text-align: center;
+    pointer-events: none;
+}
+
+.game-over .solution-outer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.game-over .solution {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 80%;
+}
+
+.help-menu .card-example .card {
+    border: none;
+}
+
+.help-menu .card-example img {
+    font-size: 23px;
+}
+
 
 /* Utils */
 .red {
