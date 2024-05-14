@@ -33,7 +33,7 @@ window.onload = () => {
 // Generate solution
 function generateSolution() {
     let type = solutionType[Math.floor(Math.random() * solutionType.length)];
-    // let type = "Full House";
+
     if (type == "Straight") {
         let startingValue = Math.floor(Math.random() * 9) + 2;
         for (let i = 0; i < 5; i++) {

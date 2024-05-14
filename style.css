@@ -432,6 +432,10 @@ main {
     padding: 8px 0 8px 20px;
 }
 
+.numerical-value {
+    display: block;
+}
+
 .help-menu .middle-second {
     display: flex;
     flex-direction: column;
